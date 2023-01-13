@@ -1,7 +1,13 @@
-import { useNavigationContainerRef } from '@react-navigation/native'
+import {
+	NavigationContainer,
+	useNavigationContainerRef
+} from '@react-navigation/native'
 import { FC, useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { Text } from 'react-native'
 
+import BottomMenu from '@/components/screens/UI/layout/bottom-menu/BottomMenu'
+
+import PrivateNavigation from './PrivateNavigation'
 import { useAuth } from '@/hooks/useAuth'
 
 const Navigation: FC = () => {
@@ -25,9 +31,14 @@ const Navigation: FC = () => {
 		}
 	}, [])
 	return (
-		<View>
-			<Text>Navigation</Text>
-		</View>
+		<>
+			<NavigationContainer ref={navRef}>
+				<PrivateNavigation />
+			</NavigationContainer>
+			{user && currentRoute && (
+				<BottomMenu nav={navRef.navigate} {...{ currentRoute }} />
+			)}
+		</>
 	)
 }
 
