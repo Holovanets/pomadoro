@@ -4,7 +4,7 @@ import { Text, View } from 'react-native'
 const Home: FC = () => {
 	return (
 		<View>
-			<Text>Home</Text>
+			<Text>Home Page is Working</Text>
 		</View>
 	)
 }

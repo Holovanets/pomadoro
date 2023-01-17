@@ -16,8 +16,9 @@ const BottomMenu: FC<IBottomMenu> = ({ currentRoute, nav }) => {
 	const { bottom } = useSafeAreaInsets()
 	return (
 		<View
-			className={`pt-5 px-3 flex-row justify-between items-center w-full bg-[${AppPrefers.mainBackground}]`}
+			className='pt-5 px-3 flex-row justify-between items-center w-full'
 			style={{
+				backgroundColor: AppPrefers.mainBackground,
 				paddingBottom: bottom + 10
 			}}
 		>
