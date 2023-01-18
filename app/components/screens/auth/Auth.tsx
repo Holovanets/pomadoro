@@ -32,6 +32,7 @@ const Auth: FC = () => {
 			_id: '',
 			...data
 		})
+		reset()
 	}
 
 	const isLoading = false
@@ -40,7 +41,7 @@ const Auth: FC = () => {
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
 			<View className='items-center justify-center flex-1'>
 				<View className='w-3/4'>
-					<Text className='text-white text-5xl font-bold text-center '>
+					<Text className='text-white text-5xl font-bold text-center mb-5 '>
 						{isReg ? 'Реєстрація' : 'Вхід'}
 					</Text>
 					{isLoading ? (
