@@ -1,9 +1,9 @@
 import { Feather } from '@expo/vector-icons'
 import cn from 'clsx'
-import { Dispatch, FC, SetStateAction } from 'react'
-import { Pressable, Text, View } from 'react-native'
+import { FC } from 'react'
+import { Pressable } from 'react-native'
 
-import { IProps } from '@/types/timerProps.interface'
+import { IProps } from '@/types/stateProps.interface'
 
 import { AppShadow } from '@/prefers'
 
