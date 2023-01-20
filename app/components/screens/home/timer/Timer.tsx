@@ -1,32 +1,46 @@
 import cn from 'clsx'
 import { FC, useEffect, useRef, useState } from 'react'
-import { Dimensions, Text, View } from 'react-native'
+import { Animated, Dimensions, Pressable, Text, View } from 'react-native'
 
 import PlayButton from './PlayButton'
 import TimerCounter from './TimerCounter'
 import { EnumStatus } from './timer.interface'
 
 const flowDuration = 5
-const sessionCount = 10
+const sessionCount = 9
 const breakDuration = 10
+const isMovable = sessionCount > 7
 
 const Timer: FC = () => {
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [status, setStatus] = useState<EnumStatus>(EnumStatus.REST)
 	const [currentSession, setCurrentSession] = useState(1)
 	const [key, setKey] = useState(0)
+
 	useEffect(() => {
-		if (isPlaying && status === EnumStatus.REST) setKey(prev => prev + 1)
+		if (isPlaying && status === EnumStatus.REST) {
+			setKey(prev => prev + 1)
+		}
 	}, [isPlaying])
 
+	const center = Dimensions.get('window').width / 2 - 42
+	const leftIndent = useRef(new Animated.Value(0)).current
+
+	function moveLeft() {
+		Animated.timing(leftIndent, {
+			toValue: (currentSession - 1) * -48,
+			duration: 1000,
+			useNativeDriver: true
+		}).start()
+	}
 	const didMount = useRef(false)
 
 	useEffect(() => {
-		if (didMount.current) console.log('Updated')
-		else didMount.current = true
+		if (didMount.current) {
+			currentSession <= sessionCount && isMovable && moveLeft()
+			console.log('Updated')
+		} else didMount.current = true
 	}, [currentSession])
-
-	const isSmallIndicator = currentSession > 7
 
 	return (
 		<View className='justify-center flex-1'>
@@ -43,18 +57,25 @@ const Timer: FC = () => {
 					key
 				}}
 			/>
-			<View className='mt-10 flex-row '>
+			<View
+				className={cn('mt-10 flex-row', {
+					'justify-center': sessionCount <= 7
+				})}
+			>
 				{Array.from(Array(sessionCount)).map((_, index) => {
 					return (
-						<View
-							className='flex-row items-center'
+						<Animated.View
+							className='flex-row items-center '
 							key={`point ${index}`}
-							style={{
-								position: 'relative',
-								left:
-									Dimensions.get('window').width / 2 -
-									(42 + (currentSession - 1) * 48)
-							}}
+							style={
+								isMovable && [
+									{
+										position: 'relative',
+										left: center,
+										transform: [{ translateX: leftIndent }]
+									}
+								]
+							}
 						>
 							<View
 								className={cn(
@@ -74,11 +95,10 @@ const Timer: FC = () => {
 									})}
 								/>
 							)}
-						</View>
+						</Animated.View>
 					)
 				})}
 			</View>
-
 			<PlayButton {...{ isPlaying, setIsPlaying }} />
 		</View>
 	)
